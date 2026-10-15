@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#1f6f78">
+  <title>ケアマネアセスメントナビ</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="toast" class="toast" hidden></div>
+  <div id="modalRoot"></div>
+
+  <section id="authView" class="auth-shell">
+    <div class="auth-card">
+      <div class="brand-mark">CA</div>
+      <h1>ケアマネアセスメントナビ</h1>
+      <div id="setupPanel" hidden>
+        <h2>初回設定</h2>
+        <p>6桁の数字PINを設定してください。PINを忘れた場合、端末内データをすべて削除して初期化する必要があります。</p>
+        <label>PIN<input id="setupPin" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="new-password"></label>
+        <label>PIN確認<input id="setupPin2" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="new-password"></label>
+        <button id="setupBtn" class="primary wide">設定して開始</button>
+      </div>
+      <div id="unlockPanel" hidden>
+        <h2>ロック解除</h2>
+        <label>6桁PIN<input id="unlockPin" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="current-password"></label>
+        <button id="unlockBtn" class="primary wide">解除</button>
+        <button id="forgotBtn" class="text-button">PINを忘れた場合（データ初期化）</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="appView" hidden>
+    <header class="app-header">
+      <div class="brand-inline"><span class="brand-mini">CA</span><strong>ケアマネアセスメントナビ</strong></div>
+      <div class="header-actions">
+        <span id="saveStatus" class="save-status">保存済み</span>
+        <button id="lockBtn" class="ghost small">ロック</button>
+      </div>
+    </header>
+
+    <main id="mainContent" class="main-content"></main>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="xlsx.js"></script>
+  <script src="print.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#1f6f78">
+  <title>ケアマネアセスメントナビ｜導入</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="install-page">
+  <main class="install-card">
+    <div class="brand-mark">CA</div>
+    <h1>ケアマネアセスメントナビ <small>v2</small></h1>
+    <p class="lead">ケアマネジャー向けのアセスメント聞き取り支援ツールです。利用者情報は外部サーバーへ送信せず、この端末内に暗号化して保存します。</p>
+    <div class="notice success">初回導入後は主要機能をオフラインで利用できます。</div>
+    <section id="platformGuide" class="guide"></section>
+    <div class="install-actions">
+      <button id="installBtn" class="primary" hidden>この端末にインストール</button>
+      <a class="secondary button-link" href="app.html">ブラウザで開く</a>
+    </div>
+    <details>
+      <summary>プライバシーと保存について</summary>
+      <ul>
+        <li>氏名・住所・病歴・家族情報・アセスメント内容は端末内に保存します。</li>
+        <li>6桁PINから生成した鍵で保存データを暗号化します。</li>
+        <li>PINを忘れて初期化した場合、端末内データは復元できません。</li>
+        <li>サイトデータ削除・端末故障時も復元できません。バックアップ機能はありません。</li>
+        <li>PDF・Excel出力後のファイル管理は利用者側で行ってください。</li>
+      </ul>
+    </details>
+  </main>
+  <script>
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
+  let deferredPrompt = null;
+  const guide = document.getElementById('platformGuide');
+  const installBtn = document.getElementById('installBtn');
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/.test(ua);
+  const isWindows = /Windows/.test(ua);
+  if (isIOS) {
+    guide.innerHTML = '<h2>iPhone</h2><ol><li>Safariでこのページを開きます。</li><li>共有ボタンを押します。</li><li>「ホーム画面に追加」を選択します。</li><li>追加後、ホーム画面のアイコンから起動します。</li></ol>';
+  } else if (isAndroid) {
+    guide.innerHTML = '<h2>Android</h2><ol><li>Chromeでこのページを開きます。</li><li>下の「この端末にインストール」またはブラウザメニューの「アプリをインストール」を選びます。</li><li>インストール後、ホーム画面から起動します。</li></ol>';
+  } else if (isWindows) {
+    guide.innerHTML = '<h2>Windows PC</h2><ol><li>Microsoft EdgeまたはChromeでこのページを開きます。</li><li>下の「この端末にインストール」またはアドレスバーのインストールアイコンを選びます。</li><li>インストール後、スタートメニュー等から起動します。</li></ol>';
+  } else {
+    guide.innerHTML = '<h2>導入方法</h2><p>対応ブラウザの「アプリをインストール」「ホーム画面に追加」機能を利用してください。</p>';
+  }
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); deferredPrompt = e; installBtn.hidden = false;
+  });
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null; installBtn.hidden = true;
+  });
+  </script>
+</body>
+</html>
